@@ -1,0 +1,25 @@
+Compiler-RT for Patmos
+======================
+
+To compile the compiler-rt libraries for patmos, go to lib/patmos, and
+
+- (optional) create a config.mk that sets BUILDDIR, and possibly other paths for your local setup
+
+- run make && make install to compile everything and put it next to the patmos-newlib library files
+
+When patmos-clang invokes llvm-ld, it links compiler-rt automatically to your application.
+
+TODOS
+-----
+
+- Check the list of symbols in lib/patmos/libllsyms.ll and OBJS in lib/patmos/Makefile
+  for any missing functions (e.g. support for vector formats?) or functions that are 
+  supported natively by Patmos
+
+- Split libllsyms.ll into two files, containing only softfloat support and the rest, 
+  update the Makefile and Clang patmos::Link::ConstructJob to allow for not linking in
+  floating-point stuff (if either some -no-floats option is given or if Patmos is 
+  configured with hardware-FPU)
+
+- Rip out the existing broken CMake stuff, replace with some cmake files specific for Patmos
+

@@ -1,6 +1,9 @@
 # http://www.gnu.org/software/automake
 
 Makefile.in
+*.o
+*.a
+*.lst
 
 # http://www.gnu.org/software/autoconf
 

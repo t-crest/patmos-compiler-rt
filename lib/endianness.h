@@ -87,6 +87,11 @@
 
 /* . */
 
+#if defined(__PATMOS__)
+#define _YUGA_LITTLE_ENDIAN 0
+#define _YUGA_BIG_ENDIAN    1
+#endif
+
 #if !defined(_YUGA_LITTLE_ENDIAN) || !defined(_YUGA_BIG_ENDIAN)
 #error Unable to determine endian
 #endif /* Check we found an endianness correctly. */
