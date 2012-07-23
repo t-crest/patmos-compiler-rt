@@ -10,6 +10,7 @@ declare i64 @__lshrdi3(i64 %a, i32 %b) nounwind readnone
 declare i64 @__muldi3(i64 %a, i64 %b) nounwind readnone
 	
 declare i64 @__divdi3(i64 %a, i64 %b) nounwind
+declare i32 @__divsi3(i32 %a, i32 %b) nounwind 
 declare i64 @__moddi3(i64 %a, i64 %b) nounwind
 declare i32 @__modsi3(i32 %a, i32 %b) nounwind
 declare i64 @__udivdi3(i64 %a, i64 %b) nounwind
