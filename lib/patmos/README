@@ -1,0 +1,12 @@
+Instructions
+------------
+
+
+To compile the compiler-rt libraries for patmos, go to lib/patmos, and
+
+- (optional) create a config.mk that sets BUILDDIR, and possibly other paths for your local setup
+- run make && make install to compile everything and put it next to the patmos-newlib library files
+
+
+NOTE: The Makefile usage is deprecated and will eventually be removed.
+      It was replaced by the new cmake build system, which essentially does the same.

@@ -1,25 +1,67 @@
-Compiler-RT for Patmos
-======================
 
-To compile the compiler-rt libraries for patmos, go to lib/patmos, and
 
-- (optional) create a config.mk that sets BUILDDIR, and possibly other paths for your local setup
+                             COMPILER-RT FOR PATMOS
 
-- run make && make install to compile everything and put it next to the patmos-newlib library files
 
-When patmos-clang invokes llvm-ld, it links compiler-rt automatically to your application.
+This is the compiler-rt library for Patmos, providing software routines for
+soft-floats, conversions, division etc.
 
+--------------------------------------------------------------------------------
+1. Requirements
+
+ - cmake 2.8 or higher
+
+ - LLVM, Clang, and NewLib for Patmos (optional)
+   https://github.com/t-crest/patmos-llvm
+   https://github.com/t-crest/patmos-clang
+   https://github.com/t-crest/patmos-newlib
+
+
+
+--------------------------------------------------------------------------------
+2. Configure and build
+
+  mkdir build
+  cd build
+  cmake .. -DCMAKE_TOOLCHAIN_FILE=../cmake/<processor>-clang-toolchain.cmake \
+           -DCMAKE_INSTALL_PREFIX=/path/to/newlib/prefix/
+  make
+  make install
+
+
+'make install' puts the generated files next to the installed patmos-newlib
+library files (which was configured with --prefix during newlib configuration)
+
+
+Additional search paths can be provided using -DCMAKE_PROGRAM_PATH=<path>
+If you have an llvm installation apart from that with patmos,
+also the option -DCMAKE_SYSTEM_IGNORE_PATH=<path> might be helpful
+( e.g. -DCMAKE_SYSTEM_IGNORE_PATH=$(dirname $(which clang)) ).
+
+
+--------------------------------------------------------------------------------
+3. Use it
+
+
+When patmos-clang invokes llvm-ld, it links compiler-rt automatically to your
+application.
+
+
+Have fun!
+
+
+
+--------------------------------------------------------------------------------
 TODOS
 -----
 
-- Check the list of symbols in lib/patmos/libllsyms.ll and OBJS in lib/patmos/Makefile
-  for any missing functions (e.g. support for vector formats?) or functions that are 
-  supported natively by Patmos
+- Check the list of symbols in lib/patmos/libllsyms.ll and LLSOURCES in
+  lib/CMakeLists.txt (formerly OBJS in lib/patmos/Makefile) for any missing
+  functions (e.g. support for vector formats?) or functions that are supported
+  natively by Patmos
 
-- Split libllsyms.ll into two files, containing only softfloat support and the rest, 
-  update the Makefile and Clang patmos::Link::ConstructJob to allow for not linking in
-  floating-point stuff (if either some -no-floats option is given or if Patmos is 
-  configured with hardware-FPU)
-
-- Rip out the existing broken CMake stuff, replace with some cmake files specific for Patmos
+- Split libllsyms.ll into two files, containing only softfloat support and the
+  rest, update the Makefile and Clang patmos::Link::ConstructJob to allow for
+  not linking in floating-point stuff (if either some -no-floats option is
+  given or if Patmos is configured with hardware-FPU)
 
