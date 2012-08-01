@@ -1,4 +1,4 @@
-target datalayout = "E-S32-p:32:32:32-i8:8:8-i16:16:16-i32:32:32-i64:32:64-n32"
+;target datalayout = "E-S32-p:32:32:32-i8:8:8-i16:16:16-i32:32:32-i64:32:64-f64:32:64-n32"
 target triple = "patmos-unknown-elf"
 
 declare i64 @__ashldi3(i64 %a, i32 %b) nounwind readnone
