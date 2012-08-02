@@ -14,23 +14,29 @@ set( LLSOURCES
 add_library( ${LIBNAME} STATIC ${LLSOURCES} )
 set_target_properties( ${LIBNAME} PROPERTIES COMPILE_FLAGS "-U__i386__ -D__PATMOS__ -O2 ")
 
-add_custom_command(OUTPUT lib${LIBNAME}syms.o
-                   COMMAND ${LLVM_AS_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/lib${LIBNAME}syms.o ${CMAKE_CURRENT_SOURCE_DIR}/patmos/lib${LIBNAME}syms.ll
-                   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/patmos/lib${LIBNAME}syms.ll )
-add_custom_target( lib${LIBNAME}syms-o ALL DEPENDS lib${LIBNAME}syms.o)
 
-add_custom_command(OUTPUT libcsyms.o
-                   COMMAND ${LLVM_AS_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/libcsyms.o ${CMAKE_CURRENT_SOURCE_DIR}/patmos/libcsyms.ll
-                   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/patmos/libcsyms.ll )
-add_custom_target( libcsyms-o ALL DEPENDS libcsyms.o)
+foreach( SYMFILE ${LIBNAME} c)
+  set( SYMFBASE lib${SYMFILE}syms )
 
-add_custom_command(OUTPUT lib${LIBNAME}syms.lst
-                   COMMAND cat ${CMAKE_CURRENT_SOURCE_DIR}/patmos/lib${LIBNAME}syms.ll | grep "\"^declare\"" | sed "\"s/declare .* @\\([^(]*\\).*$$/\\1/\"" > ${CMAKE_CURRENT_BINARY_DIR}/lib${LIBNAME}syms.lst
-                   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/patmos/lib${LIBNAME}syms.ll )
-add_custom_target( lib${LIBNAME}syms-lst ALL DEPENDS lib${LIBNAME}syms.lst)
+
+  add_custom_command(OUTPUT ${SYMFBASE}.o
+                     COMMAND ${LLVM_AS_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.o ${CMAKE_CURRENT_SOURCE_DIR}/patmos/${SYMFBASE}.ll
+                     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/patmos/${SYMFBASE}.ll )
+  add_custom_target( ${SYMFBASE}-o ALL DEPENDS ${SYMFBASE}.o)
+
+  add_custom_command(OUTPUT ${SYMFBASE}.lst
+                     COMMAND cat ${CMAKE_CURRENT_SOURCE_DIR}/patmos/${SYMFBASE}.ll | grep "\"^declare\"" | sed "\"s/declare .* @\\([^(]*\\).*$$/\\1/\"" > ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.lst
+                     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/patmos/${SYMFBASE}.ll )
+  add_custom_target( ${SYMFBASE}-lst ALL DEPENDS ${SYMFBASE}.lst)
+
+  install( FILES ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.o
+                 ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.lst
+           DESTINATION ${TRIPLE}/lib )
+
+endforeach( SYMFILE )
+
+
+
+
 
 install( TARGETS ${LIBNAME} DESTINATION ${TRIPLE}/lib )
-install( FILES ${CMAKE_CURRENT_BINARY_DIR}/lib${LIBNAME}syms.o
-               ${CMAKE_CURRENT_BINARY_DIR}/libcsyms.o
-               ${CMAKE_CURRENT_BINARY_DIR}/lib${LIBNAME}syms.lst
-         DESTINATION ${TRIPLE}/lib )
