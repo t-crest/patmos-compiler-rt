@@ -14,16 +14,24 @@ if(NOT CLANG_EXECUTABLE)
   message(FATAL_ERROR "clang required for a Patmos build.")
 endif()
 
-CMAKE_FORCE_C_COMPILER(${CLANG_EXECUTABLE} GNU)
+# read the env var for patmos gold
+set(PATMOS_GOLD_BIN $ENV{PATMOS_GOLD})
+if( PATMOS_GOLD_BIN )
+  set( PATMOS_GOLD_ENV "PATMOS_GOLD=${PATMOS_GOLD_BIN} " )
+endif( PATMOS_GOLD_BIN )
+
+
+CMAKE_FORCE_C_COMPILER(  ${CLANG_EXECUTABLE} GNU)
 CMAKE_FORCE_CXX_COMPILER(${CLANG_EXECUTABLE} GNU)
+
 
 # the clang triple, also used for installation
 set(TRIPLE patmos-unknown-elf)
 
 # set some compiler-related variables;
-set(CMAKE_C_COMPILE_OBJECT   "<CMAKE_C_COMPILER>   -ccc-host-triple ${TRIPLE} -fno-builtin -emit-llvm <DEFINES> <FLAGS> -o <OBJECT> -c <SOURCE>")
-set(CMAKE_CXX_COMPILE_OBJECT "<CMAKE_CXX_COMPILER> -ccc-host-triple ${TRIPLE} -fno-builtin -emit-llvm <DEFINES> <FLAGS> -o <OBJECT> -c <SOURCE>")
-set(CMAKE_C_LINK_EXECUTABLE "<CMAKE_C_COMPILER> -ccc-host-triple ${TRIPLE} -fno-builtin <FLAGS> <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
+set(CMAKE_C_COMPILE_OBJECT   "${PATMOS_GOLD_ENV}<CMAKE_C_COMPILER>   -ccc-host-triple ${TRIPLE} -fno-builtin -emit-llvm <DEFINES> <FLAGS> -o <OBJECT> -c <SOURCE>")
+set(CMAKE_CXX_COMPILE_OBJECT "${PATMOS_GOLD_ENV}<CMAKE_CXX_COMPILER> -ccc-host-triple ${TRIPLE} -fno-builtin -emit-llvm <DEFINES> <FLAGS> -o <OBJECT> -c <SOURCE>")
+set(CMAKE_C_LINK_EXECUTABLE  "${PATMOS_GOLD_ENV}<CMAKE_C_COMPILER>   -ccc-host-triple ${TRIPLE} -fno-builtin <FLAGS> <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
 set(CMAKE_FORCE_C_OUTPUT_EXTENSION ".bc" FORCE)
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
