@@ -17,7 +17,7 @@ endif()
 # read the env var for patmos gold
 set(PATMOS_GOLD_BIN $ENV{PATMOS_GOLD})
 if( PATMOS_GOLD_BIN )
-  set( PATMOS_GOLD_ENV "PATMOS_GOLD=${PATMOS_GOLD_BIN} " )
+  set( PATMOS_GOLD_ENV "/usr/bin/env PATMOS_GOLD=${PATMOS_GOLD_BIN} " )
 endif( PATMOS_GOLD_BIN )
 
 
