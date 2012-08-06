@@ -11,7 +11,8 @@ if("${CMAKE_SYSTEM_NAME}" MATCHES "patmos")
   set(IS_BIGENDIAN true)
 endif()
 
-set(LIBNAME ll)
+set(LIB_SUPPORT   llspt)
+set(LIB_SOFTFLOAT llsflt)
 
 add_subdirectory(lib)
 
