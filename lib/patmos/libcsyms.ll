@@ -6,5 +6,6 @@ declare i8* @memcpy(i8* %dst, i8* %src, i32 %len) nounwind
 declare i8* @memmove(i8* %dst, i8* %src, i32 %len) nounwind
 declare i8* @memset(i8* %m, i32 %c, i32 %n) nounwind
 
-;declare void @abort() noreturn nounwind
+; required for llvm.trap intrinsic
+declare void @abort() noreturn nounwind
 
