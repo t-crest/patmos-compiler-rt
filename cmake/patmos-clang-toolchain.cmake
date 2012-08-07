@@ -15,14 +15,15 @@ if(NOT CLANG_EXECUTABLE)
 endif()
 
 # read the env var for patmos gold
-if(NOT PATMOS_GOLD_BIN)
-    set(PATMOS_GOLD_BIN $ENV{PATMOS_GOLD})
+if(NOT PATMOS_GOLD)
+    set(PATMOS_GOLD $ENV{PATMOS_GOLD})
 endif()
-find_program(PATMOS_GOLD_BIN NAMES patmos-gold DOC "Path to the Patmos ELF linker.")
+find_program(PATMOS_GOLD NAMES patmos-gold patmos-ld DOC "Path to the Patmos ELF linker.")
 
-if( PATMOS_GOLD_BIN )
-  set( PATMOS_GOLD_ENV "/usr/bin/env PATMOS_GOLD=${PATMOS_GOLD_BIN} " )
-endif( PATMOS_GOLD_BIN )
+if( PATMOS_GOLD )
+  set( PATMOS_GOLD_ENV "/usr/bin/env PATMOS_GOLD=${PATMOS_GOLD} " )
+  #set( ENV{PATMOS_GOLD} ${PATMOS_GOLD_BIN} )
+endif( PATMOS_GOLD )
 
 
 CMAKE_FORCE_C_COMPILER(  ${CLANG_EXECUTABLE} GNU)
@@ -86,7 +87,7 @@ set(CMAKE_FORCE_RANLIB ${LLVM_RANLIB_EXECUTABLE})
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # find llvm-ld
-find_program(LLVM_LD_EXECUTABLE NAMES patmos-llvm-ld patmos-ld llvm-ld DOC "Path to the llvm-ld tool.")
+find_program(LLVM_LD_EXECUTABLE NAMES patmos-llvm-ld llvm-ld DOC "Path to the llvm-ld tool.")
 
 if(NOT LLVM_LD_EXECUTABLE)
   message(FATAL_ERROR "llvm-ld required for a Patmos build.")
