@@ -1,5 +1,5 @@
 
-set( SRC_SUPPORT
+set( SRC_RT
  ashldi3.c ashrdi3.c lshrdi3.c
  clzsi2.c
  muldi3.c
@@ -8,7 +8,7 @@ set( SRC_SUPPORT
  udivmoddi4.c
  )
 
-set( SRC_SOFTFLOAT
+set( SRC_RTSFLT
  addsf3.c subsf3.c mulsf3.c divsf3.c comparesf2.c
  adddf3.c subdf3.c muldf3.c divdf3.c comparedf2.c
  truncdfsf2.c extendsfdf2.c
@@ -23,12 +23,12 @@ set( SRC_SOFTFLOAT
 
 
 
-add_library( ${LIB_SUPPORT} STATIC ${SRC_SUPPORT} )
-add_library( ${LIB_SOFTFLOAT} STATIC ${SRC_SOFTFLOAT} )
-set_target_properties( ${LIB_SUPPORT} ${LIB_SOFTFLOAT}
+add_library( ${LIB_RT} STATIC ${SRC_RT} )
+add_library( ${LIB_RTSFLT} STATIC ${SRC_RTSFLT} )
+set_target_properties( ${LIB_RT} ${LIB_RTSFLT}
                        PROPERTIES COMPILE_FLAGS "-U__i386__ -D__PATMOS__ -O2 ")
 
-install( TARGETS ${LIB_SUPPORT} ${LIB_SOFTFLOAT}
+install( TARGETS ${LIB_RT} ${LIB_RTSFLT}
          DESTINATION ${TRIPLE}/lib )
 
 # the .ll / .o / .lst file containing the symbols
@@ -56,7 +56,7 @@ endforeach( SYMFILE )
 
 
 # the support / softfloat symbols
-foreach( SYMFILE ${LIB_SUPPORT} ${LIB_SOFTFLOAT} )
+foreach( SYMFILE ${LIB_RT} ${LIB_RTSFLT} )
   set( SYMFBASE lib${SYMFILE}syms )
 
   add_custom_command(OUTPUT ${SYMFBASE}.ll ${SYMFBASE}.lst
