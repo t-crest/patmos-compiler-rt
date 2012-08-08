@@ -38,6 +38,11 @@ If you have an llvm installation apart from that with patmos,
 also the option -DCMAKE_SYSTEM_IGNORE_PATH=<path> might be helpful
 ( e.g. -DCMAKE_SYSTEM_IGNORE_PATH=$(dirname $(which clang)) ).
 
+Example:
+
+  cmake .. -DCMAKE_TOOLCHAIN_FILE=../cmake/patmos-clang-toolchain.cmake 
+           -DCMAKE_PROGRAM_PATH=../../patmos-llvm/build/Debug+Asserts/bin 
+	   -DCMAKE_INSTALL_PREFIX=../../patmos-llvm/build/Debug+Asserts/
 
 --------------------------------------------------------------------------------
 3. Use it
