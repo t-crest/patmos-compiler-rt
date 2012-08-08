@@ -32,6 +32,9 @@ $LLVM_NM -defined-only -extern-only $ARCHIVE | sed -n "s/^[\t ]*T \(.*\)$/\1/p" 
 # prepend each symbol with @
 SYMBOLS=$(sed 's/^.*$/@&/' < $OUT_LST)
 
+TMPDIR=$(mktemp -d)
+pushd $TMPDIR > /dev/null
+
 $LLVM_AR x $ARCHIVE
 # llvm-ar creates an archive instead of returning an exit code
 ls *.bc > /dev/null 2>&1 || error_exit "Could not extract $ARCHIVE!"
@@ -47,6 +50,8 @@ do
   rm $f $LLFILE
 done >> $OUT_LL
 
+popd > /dev/null
+rmdir $TMPDIR
 echo Done.
 
 exit 0
