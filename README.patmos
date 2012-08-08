@@ -56,17 +56,3 @@ Have fun!
 
 
 
---------------------------------------------------------------------------------
-TODOS
------
-
-- Check the list of symbols in lib/patmos/libllsyms.ll and LLSOURCES in
-  lib/CMakeLists.txt (formerly OBJS in lib/patmos/Makefile) for any missing
-  functions (e.g. support for vector formats?) or functions that are supported
-  natively by Patmos
-
-- Split libllsyms.ll into two files, containing only softfloat support and the
-  rest, update the Makefile and Clang patmos::Link::ConstructJob to allow for
-  not linking in floating-point stuff (if either some -no-floats option is
-  given or if Patmos is configured with hardware-FPU)
-
