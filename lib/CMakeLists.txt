@@ -60,7 +60,9 @@ foreach( SYMFILE ${LIB_RT} ${LIB_RTSFLT} )
   set( SYMFBASE lib${SYMFILE}syms )
 
   add_custom_command(OUTPUT ${SYMFBASE}.ll ${SYMFBASE}.lst
-                     COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/patmos/getdecls.sh ${CMAKE_CURRENT_BINARY_DIR}/lib${SYMFILE}.a
+                     COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/patmos/getdecls.sh
+                             ${CMAKE_CURRENT_BINARY_DIR}/lib${SYMFILE}.a
+                             ${LLVM_AR_EXECUTABLE} ${LLVM_NM_EXECUTABLE} ${LLVM_DIS_EXECUTABLE}
                      DEPENDS ${SYMFILE} )
 
   add_custom_command(OUTPUT ${SYMFBASE}.o

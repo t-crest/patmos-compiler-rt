@@ -94,6 +94,26 @@ if(NOT LLVM_LD_EXECUTABLE)
 endif()
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# find llvm-dis
+find_program(LLVM_DIS_EXECUTABLE NAMES patmos-llvm-dis llvm-dis DOC "Path to the llvm-dis tool.")
+
+if(NOT LLVM_DIS_EXECUTABLE)
+  message(FATAL_ERROR "llvm-dis required for a Patmos build.")
+endif()
+
+set(CMAKE_FORCE_DIS ${LLVM_DIS_EXECUTABLE})
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# find llvm-nm
+find_program(LLVM_NM_EXECUTABLE NAMES patmos-llvm-nm llvm-nm DOC "Path to the llvm-nm tool.")
+
+if(NOT LLVM_NM_EXECUTABLE)
+  message(FATAL_ERROR "llvm-nm required for a Patmos build.")
+endif()
+
+set(CMAKE_FORCE_NM ${LLVM_NM_EXECUTABLE})
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # find simulator
 
 find_program(PASIM_EXECUTABLE NAMES pasim DOC "Path to the Patmos simulator pasim.")
