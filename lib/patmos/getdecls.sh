@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # this is a temporary helper script to extract the defined symbols from an archive
 # and write declarations into a file.
@@ -8,17 +8,26 @@ LLVM_AR=${2-llvm-ar}
 LLVM_NM=${3-llvm-nm}
 LLVM_DIS=${4-llvm-dis}
 
-
-function error_exit {
-  echo $(basename $0): ERROR: $* >&2
-  exit 1
-}
-
 #ARCHIVE=${1-../../build/lib/librt.a}
 ARCHIVE=$1
 if [ ! -f $ARCHIVE ]; then
-  error_exit "Archive file $ARCHIVE does not exist!"
+  error_exit 1 "Archive file $ARCHIVE does not exist!"
 fi
+
+
+
+trap "cleanup" EXIT
+
+function error_exit {
+  local errno=$1; shift
+  echo "$(basename $0): ERROR: $*" >&2
+  exit $errno
+}
+
+function cleanup {
+  test -d $TMPDIR && rm -fr $TMPDIR #&& echo $TMPDIR removed
+}
+
 
 
 #LIBNAME=$(sed 's/lib\([[:alnum:]]*\)\.a/\1/' <(basename $ARCHIVE))
@@ -37,7 +46,7 @@ pushd $TMPDIR > /dev/null
 
 $LLVM_AR x $ARCHIVE
 # llvm-ar creates an archive instead of returning an exit code
-ls *.bc > /dev/null 2>&1 || error_exit "Could not extract $ARCHIVE!"
+ls *.bc > /dev/null 2>&1 || error_exit $? "Could not extract $ARCHIVE!"
 
 echo 'Extracting declarations'
 echo 'target triple = "patmos-unknown-elf"' > $OUT_LL
@@ -51,7 +60,6 @@ do
 done >> $OUT_LL
 
 popd > /dev/null
-rmdir $TMPDIR
 echo Done.
 
 exit 0
