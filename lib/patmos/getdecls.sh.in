@@ -3,10 +3,6 @@
 # this is a temporary helper script to extract the defined symbols from an archive
 # and write declarations into a file.
 
-# passing commands as parameters
-LLVM_AR=${2-llvm-ar}
-LLVM_NM=${3-llvm-nm}
-LLVM_DIS=${4-llvm-dis}
 
 #ARCHIVE=${1-../../build/lib/librt.a}
 ARCHIVE=$1
@@ -36,7 +32,7 @@ OUT_LST=${OUT_BASE}.lst
 OUT_LL=${OUT_BASE}.ll
 
 echo Reading $ARCHIVE
-$LLVM_NM -defined-only -extern-only $ARCHIVE | sed -n "s/^[\t ]*T \(.*\)$/\1/p"  > $OUT_LST
+@LLVM_NM_EXECUTABLE@ -defined-only -extern-only $ARCHIVE | sed -n "s/^[\t ]*T \(.*\)$/\1/p"  > $OUT_LST
 
 # prepend each symbol with @
 SYMBOLS=$(sed 's/^.*$/@&/' < $OUT_LST)
@@ -44,7 +40,7 @@ SYMBOLS=$(sed 's/^.*$/@&/' < $OUT_LST)
 TMPDIR=$(mktemp -d)
 pushd $TMPDIR > /dev/null
 
-$LLVM_AR x $ARCHIVE
+@LLVM_AR_EXECUTABLE@ x $ARCHIVE
 # llvm-ar creates an archive instead of returning an exit code
 ls *.bc > /dev/null 2>&1 || error_exit $? "Could not extract $ARCHIVE!"
 
@@ -52,7 +48,7 @@ echo 'Extracting declarations'
 echo 'target triple = "patmos-unknown-elf"' > $OUT_LL
 for f in *.bc
 do
-  $LLVM_DIS $f
+  @LLVM_DIS_EXECUTABLE@ $f
   LLFILE=${f%.bc}.ll
   echo "; $LLFILE"
   grep "$SYMBOLS" $LLFILE | grep 'define' | sed -e "s/define/declare/" -e "s/ {$//"

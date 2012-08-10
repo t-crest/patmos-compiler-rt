@@ -55,15 +55,17 @@ foreach( SYMFILE c)
 endforeach( SYMFILE )
 
 
+# configure for the right LLVM_*_EXECUTABLEs
+configure_file( patmos/getdecls.sh.in getdecls.sh @ONLY )
+
 # the support / softfloat symbols
 foreach( SYMFILE ${LIB_RT} ${LIB_RTSFLT} )
   set( SYMFBASE lib${SYMFILE}syms )
 
   add_custom_command(OUTPUT ${SYMFBASE}.ll ${SYMFBASE}.lst
-                     COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/patmos/getdecls.sh
+                     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/getdecls.sh
                              ${CMAKE_CURRENT_BINARY_DIR}/lib${SYMFILE}.a
-                             ${LLVM_AR_EXECUTABLE} ${LLVM_NM_EXECUTABLE} ${LLVM_DIS_EXECUTABLE}
-                     DEPENDS ${SYMFILE} )
+                     DEPENDS ${SYMFILE} ${CMAKE_CURRENT_BINARY_DIR}/getdecls.sh )
 
   add_custom_command(OUTPUT ${SYMFBASE}.o
                      COMMAND ${LLVM_AS_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.o ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll
