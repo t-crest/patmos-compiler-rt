@@ -5,7 +5,8 @@ set( SRC_RT
  muldi3.c
  divsi3.c modsi3.c udivsi3.c umodsi3.c
  divdi3.c moddi3.c udivdi3.c umoddi3.c
- udivmoddi4.c
+ divmodsi4.c udivmodsi4.c
+ divmoddi4.c udivmoddi4.c
  )
 
 set( SRC_RTSFLT
