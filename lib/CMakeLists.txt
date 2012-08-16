@@ -35,7 +35,7 @@ install( TARGETS ${LIB_RT} ${LIB_RTSFLT}
 # the .ll / .o / .lst file containing the symbols
 
 # the libc symbols (only one)
-foreach( SYMFILE c)
+foreach( SYMFILE c m)
   set( SYMFBASE lib${SYMFILE}syms )
 
 

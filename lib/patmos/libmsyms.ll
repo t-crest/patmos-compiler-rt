@@ -1,0 +1,27 @@
+;target datalayout = "E-S32-p:32:32:32-i8:8:8-i16:16:16-i32:32:32-i64:32:64-f64:32:64-n32"
+target triple = "patmos-unknown-elf"
+
+
+declare float  @sqrtf(float %x) nounwind
+declare double @sqrt(double %x) nounwind
+declare float  @sinf(float %x) nounwind
+declare double @sin(double %x) nounwind
+declare float  @cosf(float %x) nounwind
+declare double @cos(double %x) nounwind
+declare float  @logf(float %x) nounwind
+declare double @log(double %x) nounwind
+declare float  @log2f(float %x) nounwind
+declare double @log2(double %x) nounwind
+declare float  @log10f(float %x) nounwind
+declare double @log10(double %x) nounwind
+declare float  @expf(float %x) nounwind
+declare double @exp(double %x) nounwind
+declare float  @exp2f(float %x) nounwind
+declare double @exp2(double %x) nounwind
+declare float  @powf(float %x, float %y) nounwind
+declare double @pow(double %x, double %y) nounwind
+declare float  @fmaf(float %x, float %y) nounwind
+declare double @fma(double %x, double %y) nounwind
+declare float  @__powisf2(float %x, float %y) nounwind
+declare double @__powidf2(double %x, double %y) nounwind
+
