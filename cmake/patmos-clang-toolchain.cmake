@@ -56,8 +56,8 @@ if(NOT (${LLVM_TARGETS} MATCHES "Patmos"))
 endif()
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# find llvm-ar
-find_program(LLVM_AR_EXECUTABLE NAMES patmos-llvm-ar llvm-ar DOC "Path to the llvm-ar tool.")
+# find llvm-ar (use gold ar with LTO plugin (patmos-ar) if available)
+find_program(LLVM_AR_EXECUTABLE NAMES patmos-ar patmos-llvm-ar llvm-ar DOC "Path to the llvm-ar tool.")
 
 if(NOT LLVM_AR_EXECUTABLE)
   message(FATAL_ERROR "llvm-ar required for a Patmos build.")
@@ -77,7 +77,7 @@ set(CMAKE_FORCE_AS ${LLVM_AS_EXECUTABLE})
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # find llvm-ranlib
-find_program(LLVM_RANLIB_EXECUTABLE NAMES patmos-llvm-ranlib llvm-ranlib DOC "Path to the llvm-ranlib tool.")
+find_program(LLVM_RANLIB_EXECUTABLE NAMES patmos-ranlib patmos-llvm-ranlib llvm-ranlib DOC "Path to the llvm-ranlib tool.")
 
 if(NOT LLVM_RANLIB_EXECUTABLE)
   message(FATAL_ERROR "llvm-ranlib required for a Patmos build.")
@@ -105,7 +105,7 @@ set(CMAKE_FORCE_DIS ${LLVM_DIS_EXECUTABLE})
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # find llvm-nm
-find_program(LLVM_NM_EXECUTABLE NAMES patmos-llvm-nm llvm-nm DOC "Path to the llvm-nm tool.")
+find_program(LLVM_NM_EXECUTABLE NAMES patmos-nm patmos-llvm-nm llvm-nm DOC "Path to the llvm-nm tool.")
 
 if(NOT LLVM_NM_EXECUTABLE)
   message(FATAL_ERROR "llvm-nm required for a Patmos build.")
