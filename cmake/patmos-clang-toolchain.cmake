@@ -119,10 +119,12 @@ set(CMAKE_NM ${LLVM_NM_EXECUTABLE} CACHE FILEPATH "Archive inspector")
 
 find_program(PASIM_EXECUTABLE NAMES pasim DOC "Path to the Patmos simulator pasim.")
 
+set(PASIM_OPTIONS "" CACHE STRING "Additional command-line options passed to the Patmos simulator.")
+
 if(PASIM_EXECUTABLE)
   set(ENABLE_TESTING true)
   macro (run_io name prog in out ref)
-    add_test(NAME ${name} COMMAND ${PASIM_EXECUTABLE} ${prog} -o ${name}.stats -I ${in} -O ${out})
+    add_test(NAME ${name} COMMAND ${PASIM_EXECUTABLE} ${prog} -o ${name}.stats -I ${in} -O ${out} ${PASIM_OPTIONS})
     set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES ${out} ${name}.stats)
 
     add_test(NAME ${name}-cmp COMMAND ${CMAKE_COMMAND} -E compare_files ${out} ${ref})
