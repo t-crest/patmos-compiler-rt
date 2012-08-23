@@ -63,7 +63,8 @@ if(NOT LLVM_AR_EXECUTABLE)
   message(FATAL_ERROR "llvm-ar required for a Patmos build.")
 endif()
 
-set(CMAKE_FORCE_AR ${LLVM_AR_EXECUTABLE})
+
+set(CMAKE_AR ${LLVM_AR_EXECUTABLE} CACHE FILEPATH "Archiver")
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # find llvm-as
@@ -73,7 +74,7 @@ if(NOT LLVM_AS_EXECUTABLE)
   message(FATAL_ERROR "llvm-as required for a Patmos build.")
 endif()
 
-set(CMAKE_FORCE_AS ${LLVM_AS_EXECUTABLE})
+set(CMAKE_AS ${LLVM_AS_EXECUTABLE} CACHE FILEPATH "LLVM assembler")
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # find llvm-ranlib
@@ -83,7 +84,7 @@ if(NOT LLVM_RANLIB_EXECUTABLE)
   message(FATAL_ERROR "llvm-ranlib required for a Patmos build.")
 endif()
 
-set(CMAKE_FORCE_RANLIB ${LLVM_RANLIB_EXECUTABLE})
+set(CMAKE_RANLIB ${LLVM_RANLIB_EXECUTABLE} CACHE FILEPATH "Ranlib tool")
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # find llvm-ld
@@ -101,7 +102,7 @@ if(NOT LLVM_DIS_EXECUTABLE)
   message(FATAL_ERROR "llvm-dis required for a Patmos build.")
 endif()
 
-set(CMAKE_FORCE_DIS ${LLVM_DIS_EXECUTABLE})
+set(CMAKE_DIS ${LLVM_DIS_EXECUTABLE} CACHE FILEPATH "LLVM disassembler")
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # find llvm-nm
@@ -111,7 +112,7 @@ if(NOT LLVM_NM_EXECUTABLE)
   message(FATAL_ERROR "llvm-nm required for a Patmos build.")
 endif()
 
-set(CMAKE_FORCE_NM ${LLVM_NM_EXECUTABLE})
+set(CMAKE_NM ${LLVM_NM_EXECUTABLE} CACHE FILEPATH "Archive inspector")
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # find simulator
