@@ -33,7 +33,7 @@ OUT_LL=${OUT_BASE}.ll
 
 echo Reading $ARCHIVE
 # check for nm version
-if [ "$(@LLVM_NM_EXECUTABLE@ -V || echo llvm)" == "llvm" ]; then
+if [ "$(@LLVM_NM_EXECUTABLE@ -V 2>/dev/null || echo llvm)" == "llvm" ]; then
     @LLVM_NM_EXECUTABLE@ -defined-only -extern-only $ARCHIVE | sed -n "s/^[\t ]*T \(.*\)$/\1/p"  > $OUT_LST
 else 
     @LLVM_NM_EXECUTABLE@ --defined-only --extern-only $ARCHIVE | grep " T " | sed -n "s/^[0-9A-F]* T \(.*\)$/\1/p" > $OUT_LST
