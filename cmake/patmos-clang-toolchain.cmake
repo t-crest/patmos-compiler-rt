@@ -106,7 +106,7 @@ set(CMAKE_DIS ${LLVM_DIS_EXECUTABLE} CACHE FILEPATH "LLVM disassembler")
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # find llvm-nm
-find_program(LLVM_NM_EXECUTABLE NAMES patmos-nm patmos-llvm-nm llvm-nm DOC "Path to the llvm-nm tool.")
+find_program(LLVM_NM_EXECUTABLE NAMES patmos-llvm-nm llvm-nm DOC "Path to the llvm-nm tool.")
 
 if(NOT LLVM_NM_EXECUTABLE)
   message(FATAL_ERROR "llvm-nm required for a Patmos build.")
