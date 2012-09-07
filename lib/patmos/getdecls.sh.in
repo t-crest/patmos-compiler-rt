@@ -42,7 +42,7 @@ fi
 # prepend each symbol with @
 SYMBOLS=$(sed 's/^.*$/@&/' < $OUT_LST)
 
-TMPDIR=$(mktemp -d)
+TMPDIR=$(mktemp -d getdecls.XXXXXXXX)
 pushd $TMPDIR > /dev/null
 
 @LLVM_AR_EXECUTABLE@ x $ARCHIVE
