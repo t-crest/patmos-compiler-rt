@@ -119,7 +119,9 @@ set(CMAKE_NM ${LLVM_NM_EXECUTABLE} CACHE FILEPATH "Archive inspector")
 
 find_program(PASIM_EXECUTABLE NAMES pasim DOC "Path to the Patmos simulator pasim.")
 
-set(PASIM_OPTIONS "" CACHE STRING "Additional command-line options passed to the Patmos simulator.")
+set(PASIM_OPTIONS "-M fifo -m 64k" CACHE STRING "Additional command-line options passed to the Patmos simulator.")
+
+separate_arguments(PASIM_OPTIONS)
 
 if(PASIM_EXECUTABLE)
   set(ENABLE_TESTING true)
