@@ -56,11 +56,11 @@ if(NOT (${LLVM_TARGETS} MATCHES "Patmos"))
 endif()
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# find ar (use gold ar with LTO plugin (patmos-ar) if available; llvm-ar does not work)
-find_program(LLVM_AR_EXECUTABLE NAMES patmos-ar ar DOC "Path to the ar tool.")
+# find llvm-ar (use gold ar with LTO plugin (patmos-ar) if available)
+find_program(LLVM_AR_EXECUTABLE NAMES patmos-ar patmos-llvm-ar llvm-ar DOC "Path to the llvm-ar tool.")
 
 if(NOT LLVM_AR_EXECUTABLE)
-  message(FATAL_ERROR "ar required for a Patmos build.")
+  message(FATAL_ERROR "llvm-ar required for a Patmos build.")
 endif()
 
 
@@ -126,6 +126,15 @@ separate_arguments(PASIM_OPTIONS)
 if(PASIM_EXECUTABLE)
   set(ENABLE_TESTING true)
   macro (run_io name prog in out ref)
+    # Create symlinks to programs to make job_patmos.sh happy
+    string(REGEX REPLACE "^[a-zA-Z0-9]+-" "" _progname ${name})
+    file(TO_CMAKE_PATH ${CMAKE_CURRENT_BINARY_DIR}/${_progname} _namepath)
+    file(TO_CMAKE_PATH ${prog} _progpath)
+    if (NOT ${_namepath} STREQUAL ${_progpath})
+	add_custom_command(OUTPUT ${_namepath} COMMAND ${CMAKE_COMMAND} -E create_symlink ${prog} ${_namepath})
+	add_custom_target(${name} ALL SOURCES ${_namepath})
+    endif()
+
     add_test(NAME ${name} COMMAND ${PASIM_EXECUTABLE} ${prog} -o ${name}.stats -I ${in} -O ${out} ${PASIM_OPTIONS})
     set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES ${out} ${name}.stats)
 
