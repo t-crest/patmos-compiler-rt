@@ -131,7 +131,7 @@ if(PASIM_EXECUTABLE)
     file(TO_CMAKE_PATH ${CMAKE_CURRENT_BINARY_DIR}/${_progname} _namepath)
     file(TO_CMAKE_PATH ${prog} _progpath)
     if (NOT ${_namepath} STREQUAL ${_progpath})
-	add_custom_command(OUTPUT ${_namepath} COMMAND ${CMAKE_COMMAND} -E create_symlink ${prog} ${_namepath})
+	add_custom_command(OUTPUT ${_namepath} COMMAND ${CMAKE_COMMAND} -E remove -f ${_namepath} COMMAND ${CMAKE_COMMAND} -E create_symlink ${prog} ${_namepath})
 	add_custom_target(${name} ALL SOURCES ${_namepath})
     endif()
 
