@@ -53,6 +53,9 @@ echo 'Extracting declarations'
 echo 'target triple = "patmos-unknown-elf"' > $OUT_LL
 for f in *.bc
 do
+  if [ "$(file $f | grep ELF)" != "" ]; then
+    continue;
+  fi
   @LLVM_DIS_EXECUTABLE@ $f
   LLFILE=${f%.bc}.ll
   echo "; $LLFILE"
