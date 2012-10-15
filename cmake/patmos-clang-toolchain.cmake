@@ -56,8 +56,8 @@ if(NOT (${LLVM_TARGETS} MATCHES "Patmos"))
 endif()
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# find llvm-ar (use gold ar with LTO plugin (patmos-ar) if available)
-find_program(LLVM_AR_EXECUTABLE NAMES patmos-ar patmos-llvm-ar llvm-ar DOC "Path to the llvm-ar tool.")
+# find ar (use gold ar with LTO plugin (patmos-ar) if available; llvm-ar does not work)
+find_program(LLVM_AR_EXECUTABLE NAMES patmos-ar ar DOC "Path to the ar tool.")
 
 if(NOT LLVM_AR_EXECUTABLE)
   message(FATAL_ERROR "llvm-ar required for a Patmos build.")
