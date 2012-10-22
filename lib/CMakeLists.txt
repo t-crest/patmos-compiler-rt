@@ -15,8 +15,12 @@ set( SRC_RTSFLT
  truncdfsf2.c extendsfdf2.c
  floatsisf.c floatunsisf.c
  floatsidf.c floatunsidf.c
+ floatdisf.c floatundisf.c
+ floatdidf.c floatundidf.c
  fixsfsi.c fixunssfsi.c
  fixdfsi.c fixunsdfsi.c
+ fixsfdi.c fixunssfdi.c
+ fixdfdi.c fixunsdfdi.c
  )
 
 
