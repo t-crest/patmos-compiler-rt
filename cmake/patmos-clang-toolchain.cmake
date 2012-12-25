@@ -29,14 +29,13 @@ endif( PATMOS_GOLD )
 CMAKE_FORCE_C_COMPILER(  ${CLANG_EXECUTABLE} GNU)
 CMAKE_FORCE_CXX_COMPILER(${CLANG_EXECUTABLE} GNU)
 
-
 # the clang triple, also used for installation
 set(TRIPLE patmos-unknown-elf)
 
 # set some compiler-related variables;
-set(CMAKE_C_COMPILE_OBJECT   "<CMAKE_C_COMPILER>   -ccc-host-triple ${TRIPLE} -fno-builtin -emit-llvm <DEFINES> <FLAGS> -o <OBJECT> -c <SOURCE>")
-set(CMAKE_CXX_COMPILE_OBJECT "<CMAKE_CXX_COMPILER> -ccc-host-triple ${TRIPLE} -fno-builtin -emit-llvm <DEFINES> <FLAGS> -o <OBJECT> -c <SOURCE>")
-set(CMAKE_C_LINK_EXECUTABLE  "${PATMOS_GOLD_ENV}<CMAKE_C_COMPILER> -ccc-host-triple ${TRIPLE} -fno-builtin <FLAGS> <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
+set(CMAKE_C_COMPILE_OBJECT   "<CMAKE_C_COMPILER>   -target ${TRIPLE} -fno-builtin -emit-llvm <DEFINES> <FLAGS> -o <OBJECT> -c <SOURCE>")
+set(CMAKE_CXX_COMPILE_OBJECT "<CMAKE_CXX_COMPILER> -target ${TRIPLE} -fno-builtin -emit-llvm <DEFINES> <FLAGS> -o <OBJECT> -c <SOURCE>")
+set(CMAKE_C_LINK_EXECUTABLE  "${PATMOS_GOLD_ENV}<CMAKE_C_COMPILER> -target ${TRIPLE} -fno-builtin <FLAGS> <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
 set(CMAKE_FORCE_C_OUTPUT_EXTENSION ".bc" FORCE)
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -87,10 +86,10 @@ endif()
 set(CMAKE_RANLIB ${LLVM_RANLIB_EXECUTABLE} CACHE FILEPATH "Ranlib tool")
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# find llvm-ld
-find_program(LLVM_LD_EXECUTABLE NAMES patmos-llvm-ld llvm-ld DOC "Path to the llvm-ld tool.")
+# find llvm-link
+find_program(LLVM_LINK_EXECUTABLE NAMES patmos-llvm-link llvm-link DOC "Path to the llvm-link tool.")
 
-if(NOT LLVM_LD_EXECUTABLE)
+if(NOT LLVM_LINK_EXECUTABLE)
   message(FATAL_ERROR "llvm-ld required for a Patmos build.")
 endif()
 
