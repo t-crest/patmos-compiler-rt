@@ -4,14 +4,14 @@ BUILDDIR=../../../patmos-llvm-obj/Debug+Asserts
 
 INSTALLDIR=$(BUILDDIR)
 
-TRIPLE=patmos-unknown-elf
+TRIPLE=patmos-unknown-unknown-elf
 
 CCBIN=$(BUILDDIR)/bin/clang
 
 AS=$(BUILDDIR)/bin/llvm-as
 AR=$(BUILDDIR)/bin/llvm-ar
 
-CC=$(CCBIN) -ccc-host-triple $(TRIPLE) -U__i386__ -D__PATMOS__ -O2 -emit-llvm
+CC=$(CCBIN) -target $(TRIPLE) -U__i386__ -D__PATMOS__ -O2 -emit-llvm
 
 -include config.mk
 
