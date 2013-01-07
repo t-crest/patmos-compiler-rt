@@ -36,7 +36,7 @@
 
 /* .. */
 
-#if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonflyBSD__)
+#if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonflyBSD__) || defined(__minix)
 #include <sys/endian.h>
 
 #if _BYTE_ORDER == _BIG_ENDIAN
@@ -48,6 +48,21 @@
 #endif /* _BYTE_ORDER */
 
 #endif /* *BSD */
+
+/* .. */
+
+#if defined(__OpenBSD__) || defined(__Bitrig__)
+#include <machine/endian.h>
+
+#if _BYTE_ORDER == _BIG_ENDIAN
+#define _YUGA_LITTLE_ENDIAN 0
+#define _YUGA_BIG_ENDIAN    1
+#elif _BYTE_ORDER == _LITTLE_ENDIAN
+#define _YUGA_LITTLE_ENDIAN 1
+#define _YUGA_BIG_ENDIAN    0
+#endif /* _BYTE_ORDER */
+
+#endif /* OpenBSD and Bitrig. */
 
 /* .. */
 
