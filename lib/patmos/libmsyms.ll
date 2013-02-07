@@ -1,5 +1,5 @@
 ;target datalayout = "E-S32-p:32:32:32-i8:8:8-i16:16:16-i32:32:32-i64:32:32-f64:32:32-a0:0:32-s0:32:32-v64:32:32-v128:32:32-n32"
-target triple = "patmos-unknown-elf"
+target triple = "patmos-unknown-unknown-elf"
 
 
 declare float  @sqrtf(float %x) nounwind
