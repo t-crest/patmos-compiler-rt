@@ -141,8 +141,11 @@ if(PASIM_EXECUTABLE)
     set_tests_properties(${name}-cmp PROPERTIES DEPENDS ${name})
   endmacro (run_io)
 else()
-  message(WARNING "pasim not found, testing is disabled.")
-  #message(FATAL_ERROR "pasim required for a Patmos build.")
+  if(REQUIRES_PASIM)
+    message(FATAL_ERROR "pasim required for a Patmos build.")
+  else()
+    message(WARNING "pasim not found, testing is disabled.")
+  endif()
 endif()
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
