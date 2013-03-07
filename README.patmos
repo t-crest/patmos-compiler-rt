@@ -23,12 +23,13 @@ soft-floats, conversions, division etc.
 
   mkdir build
   cd build
-  cmake .. -DCMAKE_TOOLCHAIN_FILE=../cmake/<processor>-clang-toolchain.cmake \
-           -DCMAKE_INSTALL_PREFIX=/path/to/newlib/prefix/
+  cmake .. -DCMAKE_TOOLCHAIN_FILE=../cmake/patmos-clang-toolchain.cmake \
+           -DCMAKE_INSTALL_PREFIX=/path/to/newlib/prefix/ \
+	   -DTRIPLE=patmos-unknown-unknown-elf
   make
   make install
 
-
+The -DTRIPLE option is optional and defaults to patmos-unknown-unknown-elf.
 'make install' puts the generated files next to the installed patmos-newlib
 library files (which was configured with --prefix during newlib configuration)
 

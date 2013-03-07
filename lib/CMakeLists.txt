@@ -42,14 +42,16 @@ install( TARGETS ${LIB_RT} ${LIB_RTSFLT}
 foreach( SYMFILE c m)
   set( SYMFBASE lib${SYMFILE}syms )
 
+  # set target triple
+  configure_file( patmos/${SYMFBASE}.ll.in ${SYMFBASE}.ll @ONLY )
 
   add_custom_command(OUTPUT ${SYMFBASE}.o
-                     COMMAND ${LLVM_AS_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.o ${CMAKE_CURRENT_SOURCE_DIR}/patmos/${SYMFBASE}.ll
-                     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/patmos/${SYMFBASE}.ll )
+                     COMMAND ${LLVM_AS_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.o ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll
+                     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll )
 
   add_custom_command(OUTPUT ${SYMFBASE}.lst
-                     COMMAND cat ${CMAKE_CURRENT_SOURCE_DIR}/patmos/${SYMFBASE}.ll | grep "\"^declare\"" | sed "\"s/declare .* @\\([^(]*\\).*$$/\\1/\"" > ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.lst
-                     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/patmos/${SYMFBASE}.ll )
+                     COMMAND cat ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll | grep "\"^declare\"" | sed "\"s/declare .* @\\([^(]*\\).*$$/\\1/\"" > ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.lst
+                     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll )
 
   add_custom_target( ${SYMFBASE} ALL DEPENDS ${SYMFBASE}.lst ${SYMFBASE}.o)
 

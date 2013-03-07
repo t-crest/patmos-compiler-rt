@@ -30,7 +30,7 @@ CMAKE_FORCE_C_COMPILER(  ${CLANG_EXECUTABLE} GNU)
 CMAKE_FORCE_CXX_COMPILER(${CLANG_EXECUTABLE} GNU)
 
 # the clang triple, also used for installation
-set(TRIPLE patmos-unknown-unknown-elf)
+set(TRIPLE "patmos-unknown-unknown-elf" CACHE STRING "Target triple to compile compiler-rt for.")
 
 # set some compiler-related variables;
 set(CMAKE_C_COMPILE_OBJECT   "<CMAKE_C_COMPILER>   -target ${TRIPLE} -fno-builtin -emit-llvm <DEFINES> <FLAGS> -o <OBJECT> -c <SOURCE>")

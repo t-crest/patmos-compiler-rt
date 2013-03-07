@@ -50,7 +50,7 @@ pushd $TMPDIR > /dev/null
 ls *.bc > /dev/null 2>&1 || error_exit $? "Could not extract $ARCHIVE!"
 
 echo 'Extracting declarations'
-echo 'target triple = "patmos-unknown-unknown-elf"' > $OUT_LL
+echo 'target triple = "@TRIPLE@"' > $OUT_LL
 for f in *.bc
 do
   if [ "$(file $f | grep ELF)" != "" ]; then
