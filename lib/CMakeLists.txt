@@ -43,7 +43,11 @@ foreach( SYMFILE c m)
   set( SYMFBASE lib${SYMFILE}syms )
 
   # set target triple
-  configure_file( patmos/${SYMFBASE}.ll.in ${SYMFBASE}.ll @ONLY )
+  configure_file( patmos/${SYMFBASE}.ll.in ${SYMFBASE}.ll.tmp @ONLY )
+
+  add_custom_command(OUTPUT ${SYMFBASE}.ll
+                     COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/patmos/markused.sh ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll.tmp ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll
+		     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll.tmp )
 
   add_custom_command(OUTPUT ${SYMFBASE}.o
                      COMMAND ${LLVM_AS_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.o ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll
@@ -69,10 +73,15 @@ configure_file( patmos/getdecls.sh.in getdecls.sh @ONLY )
 foreach( SYMFILE ${LIB_RT} ${LIB_RTSFLT} )
   set( SYMFBASE lib${SYMFILE}syms )
 
-  add_custom_command(OUTPUT ${SYMFBASE}.ll ${SYMFBASE}.lst
+  add_custom_command(OUTPUT ${SYMFBASE}.ll.tmp ${SYMFBASE}.lst
                      COMMAND ${CMAKE_CURRENT_BINARY_DIR}/getdecls.sh
                              ${CMAKE_CURRENT_BINARY_DIR}/lib${SYMFILE}.a
+                             ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll.tmp
                      DEPENDS ${SYMFILE} ${CMAKE_CURRENT_BINARY_DIR}/getdecls.sh )
+
+  add_custom_command(OUTPUT ${SYMFBASE}.ll
+                     COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/patmos/markused.sh ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll.tmp ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll
+		     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll.tmp )
 
   add_custom_command(OUTPUT ${SYMFBASE}.o
                      COMMAND ${LLVM_AS_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.o ${CMAKE_CURRENT_BINARY_DIR}/${SYMFBASE}.ll

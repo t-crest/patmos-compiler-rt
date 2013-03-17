@@ -29,7 +29,11 @@ function cleanup {
 #LIBNAME=$(sed 's/lib\([[:alnum:]]*\)\.a/\1/' <(basename $ARCHIVE))
 OUT_BASE=${ARCHIVE%.a}syms
 OUT_LST=${OUT_BASE}.lst
-OUT_LL=${OUT_BASE}.ll
+if [ "$2" != "" ]; then
+    OUT_LL="$2"
+else
+    OUT_LL=${OUT_BASE}.ll
+fi
 
 echo Reading $ARCHIVE
 # check for nm version
