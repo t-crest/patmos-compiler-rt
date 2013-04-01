@@ -86,11 +86,11 @@ endif()
 set(CMAKE_RANLIB ${LLVM_RANLIB_EXECUTABLE} CACHE FILEPATH "Ranlib tool")
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# find llvm-ld
-find_program(LLVM_LD_EXECUTABLE NAMES patmos-llvm-ld llvm-ld DOC "Path to the llvm-ld tool.")
+# find llvm-link
+find_program(LLVM_LINK_EXECUTABLE NAMES patmos-llvm-link llvm-link DOC "Path to the llvm-ld tool.")
 
-if(NOT LLVM_LD_EXECUTABLE)
-  message(FATAL_ERROR "llvm-ld required for a Patmos build.")
+if(NOT LLVM_LINK_EXECUTABLE)
+  message(FATAL_ERROR "llvm-link required for a Patmos build.")
 endif()
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
