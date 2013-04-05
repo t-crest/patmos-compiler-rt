@@ -3,10 +3,10 @@ set( SRC_RT
  ashldi3.c ashrdi3.c lshrdi3.c
  clzsi2.c
  muldi3.c
- divsi3.c modsi3.c udivsi3.c umodsi3.c
- divdi3.c moddi3.c udivdi3.c umoddi3.c
- divmodsi4.c udivmodsi4.c
- divmoddi4.c udivmoddi4.c
+ patmos/wcet_oriented/udivsi3.c # following depend on udivsi3.c
+ umodsi3.c divsi3.c modsi3.c divmodsi4.c udivmodsi4.c
+ udivmoddi4.c # following depend on udivmoddi4.c
+ divmoddi4.c udivdi3.c umoddi3.c divdi3.c moddi3.c
  )
 
 set( SRC_RTSFLT
@@ -31,7 +31,7 @@ set( SRC_RTSFLT
 add_library( ${LIB_RT} STATIC ${SRC_RT} )
 add_library( ${LIB_RTSFLT} STATIC ${SRC_RTSFLT} )
 set_target_properties( ${LIB_RT} ${LIB_RTSFLT}
-                       PROPERTIES COMPILE_FLAGS "-U__i386__ -D__PATMOS__ -O2 ")
+                       PROPERTIES COMPILE_FLAGS "-I${CMAKE_CURRENT_SOURCE_DIR} -U__i386__ -D__PATMOS__ -O2 ")
 
 install( TARGETS ${LIB_RT} ${LIB_RTSFLT}
          DESTINATION ${TRIPLE}/lib )
