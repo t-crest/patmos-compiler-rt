@@ -43,10 +43,7 @@ __udivsi3(su_int n, su_int d)
         r -= d & s;
     }
     q = (q << 1) | carry;
-    if(d > (n>>1)) {
-      return (d > n) ? 0 : 1;
-    } else if (d == 1) {
-      return n;
-    }
-    return q;
+
+    su_int res = (d==1) ? n : q;
+    return (d > n) ? 0 : res;
 }
