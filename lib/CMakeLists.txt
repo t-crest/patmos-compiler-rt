@@ -1,10 +1,10 @@
 
 set( SRC_RT
  ashldi3.c ashrdi3.c lshrdi3.c
- clzsi2.c
+ patmos/clzsi2.c
  muldi3.c
- patmos/wcet_oriented/udivsi3.c # following depend on udivsi3.c
- umodsi3.c divsi3.c modsi3.c divmodsi4.c udivmodsi4.c
+ patmos/udivsi3.c patmos/udivmodsi4.c # following depend on udivsi3.c
+ umodsi3.c divsi3.c modsi3.c divmodsi4.c 
  udivmoddi4.c # following depend on udivmoddi4.c
  divmoddi4.c udivdi3.c umoddi3.c divdi3.c moddi3.c
  )
