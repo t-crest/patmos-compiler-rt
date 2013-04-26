@@ -40,14 +40,14 @@ __udivsi3(su_int n, su_int d)
     /* This implementation should have 167 cycles (including ret), can be inlined */
     unsigned q = 0;
     asm (
-	"li  $r10 = 31              ; li $r12 = 1             \n\t"  // i = 31, m = 1
-	"clr $r11                   ; sl $r12 = $r12, 31      \n\t"  // r = 0,  m = (1<<i)
+	"{ li  $r10 = 31              ; li $r12 = 1             }\n\t"  // i = 31, m = 1
+	"{ clr $r11                   ; sl $r12 = $r12, 31      }\n\t"  // r = 0,  m = (1<<i)
 	
-	"sl $r11 = $r11, 1          ; btest $p1 = %1, $r10    \n\t"  // r <<= 1, p1 = n[i]
-	"($p1) or $r11 = $r11, 1    ; cmplt $p2 = $r10, $r0   \n\t"  // r(0) = n(i), !p2 = i >= 0
-	"(!$p2) br -4               ; cmpult $p1 = $r11, %2   \n\t"  // !p1 = r >= d, loop
-	"(!$p1) sub $r11 = $r11, %2 ; (!$p1) or %0 = %0, $r12 \n\t"  // if (r >= d): r -= d, q |= (1<<i)
-	"sub $r10 = $r10, 1         ; sr $r12 = $r12, 1       \n\t"  // i--, m = (1 << i)
+	"{ sl $r11 = $r11, 1          ; btest $p1 = %1, $r10    }\n\t"  // r <<= 1, p1 = n[i]
+	"{ ($p1) or $r11 = $r11, 1    ; cmplt $p2 = $r10, $r0   }\n\t"  // r(0) = n(i), !p2 = i >= 0
+	"{ (!$p2) br -4               ; cmpult $p1 = $r11, %2   }\n\t"  // !p1 = r >= d, loop
+	"{ (!$p1) sub $r11 = $r11, %2 ; (!$p1) or %0 = %0, $r12 }\n\t"  // if (r >= d): r -= d, q |= (1<<i)
+	"{ sub $r10 = $r10, 1         ; sr $r12 = $r12, 1       }\n\t"  // i--, m = (1 << i)
 	
 	: "=r" (q) : "r" (n), "r" (d), "0" (q)
 	: "$r10", "$r11", "$r12", "$p1", "$p2"

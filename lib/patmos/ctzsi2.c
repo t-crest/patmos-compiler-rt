@@ -41,17 +41,17 @@ __ctzsi2(si_int a)
     unsigned t = 32;
     asm (
         "neg $r11 = %1                 \n\t"
-        "cmpneq $p1 = %1, $r0        ; and $r11 = %1, $r11    \n\t" // a = a & -a;
+        "{ cmpneq $p1 = %1, $r0        ; and $r11 = %1, $r11    }\n\t" // a = a & -a;
         "and $r10 = $r11, 0xFFFF0000   \n\t"     // 64bit load
-        "cmpneq $p1 = $r10, $r0      ; ($p1) sub %0 = %0, 1   \n\t" // if (a) t--;
+        "{ cmpneq $p1 = $r10, $r0      ; ($p1) sub %0 = %0, 1   }\n\t" // if (a) t--;
         "and $r10 = $r11, 0xFF00FF00   \n\t"     // 64bit load
-        "cmpneq $p1 =$r10, $r0       ; ($p1) sub %0 = %0, 16  \n\t" // if (a & 0xFFFF0000) t -= 16;
+        "{ cmpneq $p1 =$r10, $r0       ; ($p1) sub %0 = %0, 16  }\n\t" // if (a & 0xFFFF0000) t -= 16;
         "and $r10 = $r11, 0xF0F0F0F0   \n\t"     // 64bit load
-        "cmpneq $p1 = $r10, $r0      ; ($p1) sub %0 = %0, 8   \n\t" // if (a & 0xFF00FF00) t -= 8;
+        "{ cmpneq $p1 = $r10, $r0      ; ($p1) sub %0 = %0, 8   }\n\t" // if (a & 0xFF00FF00) t -= 8;
         "and $r10 = $r11, 0xCCCCCCCC   \n\t"     // 64bit load
-        "cmpneq $p1 = $r10, $r0      ; ($p1) sub %0 = %0, 4   \n\t" // if (a & 0xF0F0F0F0) t -= 4;
+        "{ cmpneq $p1 = $r10, $r0      ; ($p1) sub %0 = %0, 4   }\n\t" // if (a & 0xF0F0F0F0) t -= 4;
         "and $r10 = $r11, 0xAAAAAAAA   \n\t"     // 64bit load
-        "cmpneq $p1 = $r10, $r0      ; ($p1) sub %0 = %0, 2   \n\t" // if (a & 0xCCCCCCCC) t -= 2;
+        "{ cmpneq $p1 = $r10, $r0      ; ($p1) sub %0 = %0, 2   }\n\t" // if (a & 0xCCCCCCCC) t -= 2;
         "($p1) sub %0 = %0, 1          \n\t"                        // if (a & 0xAAAAAAAA) t -= 1;
         : "=r" (t) : "r" (a), "0" (t) 
         : "$r10", "$r11"
