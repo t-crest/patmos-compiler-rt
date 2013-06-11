@@ -21,6 +21,37 @@
 COMPILER_RT_ABI si_int
 __clzsi2(si_int a)
 {
+#if __PATMOS_SINGLE_ISSUE__ || CRT_NO_INLINE_ASM
+    su_int x = (su_int)a;
+    si_int t = ((x & 0xFFFF0000) == 0) << 4;  /* if (x is small) t = 16 else 0 */
+    x >>= 16 - t;      /* x = [0 - 0xFFFF] */
+    su_int r = t;       /* r = [0, 16] */
+    /* return r + clz(x) */
+    t = ((x & 0xFF00) == 0) << 3;
+    x >>= 8 - t;       /* x = [0 - 0xFF] */
+    r += t;            /* r = [0, 8, 16, 24] */
+    /* return r + clz(x) */
+    t = ((x & 0xF0) == 0) << 2;
+    x >>= 4 - t;       /* x = [0 - 0xF] */
+    r += t;            /* r = [0, 4, 8, 12, 16, 20, 24, 28] */
+    /* return r + clz(x) */
+    t = ((x & 0xC) == 0) << 1;
+    x >>= 2 - t;       /* x = [0 - 3] */
+    r += t;            /* r = [0 - 30] and is even */
+    /* return r + clz(x) */
+/*     switch (x)
+ *     {
+ *     case 0:
+ *         return r + 2;
+ *     case 1:
+ *         return r + 1;
+ *     case 2:
+ *     case 3:
+ *         return r;
+ *     }
+ */
+    return r + ((2 - x) & -((x & 2) == 0));
+#else
     unsigned t = 0;
     asm (
         "{ li $r11 = 16                ; li  $r10 = 1 }\n\t"            // k = 16, m = 1
@@ -40,5 +71,6 @@ __clzsi2(si_int a)
         : "$r10", "$r11", "$p1", "$p2"
     );
     return t;
+#endif
 }
 

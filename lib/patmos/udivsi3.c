@@ -19,10 +19,10 @@
 COMPILER_RT_ABI su_int
 __udivsi3(su_int n, su_int d)
 {
+#if __PATMOS_SINGLE_ISSUE__ || CRT_NO_INLINE_ASM
     /* This has ~430 cycles, bundling compiler should be able to bring this down to ~230 cycles 
      * Should still be better than original C without branches due to lower data dependencies 
      * TODO The compiler should be able to lower this to the code below in the future. */
-    /*
     unsigned r = 0;
     unsigned q = 0;
     for (int i = 31; i >= 0; i--) {
@@ -35,8 +35,7 @@ __udivsi3(su_int n, su_int d)
 	    q |= (1 << i);
 	}
     }
-    */
-
+#else
     /* This implementation should have 167 cycles (including ret), can be inlined */
     unsigned q = 0;
     asm (
@@ -52,6 +51,7 @@ __udivsi3(su_int n, su_int d)
 	: "=r" (q) : "r" (n), "r" (d), "0" (q)
 	: "$r10", "$r11", "$r12", "$p1", "$p2"
     );
+#endif
     return q;
 }
 

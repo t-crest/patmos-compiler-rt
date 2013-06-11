@@ -21,11 +21,10 @@ __udivmodsi4(su_int n, su_int d, su_int* rem)
 {
     unsigned r;
     unsigned q = 0;
-
+#if __PATMOS_SINGLE_ISSUE__ || CRT_NO_INLINE_ASM
     /* This has ~430 cycles, bundling compiler should be able to bring this down to ~230 cycles 
      * Should still be better than original C without branches due to lower data dependencies 
      * TODO The compiler should be able to lower this to the code below in the future. */
-    /*
     r = 0;
     for (int i = 31; i >= 0; i--) {
 	r <<= 1;
@@ -37,8 +36,7 @@ __udivmodsi4(su_int n, su_int d, su_int* rem)
 	    q |= (1 << i);
 	}
     }
-    */
-
+#else
     /* This implementation should have ~170 cycles (including ret), can be inlined */
     asm (
 	"{ li  $r10 = 31              ; li $r12 = 1             }\n\t"  // i = 31, m = 1
@@ -53,6 +51,7 @@ __udivmodsi4(su_int n, su_int d, su_int* rem)
 	: "=r" (q), "=r" (r) : "r" (n), "r" (d), "0" (q), "1" (r)
 	: "$r10", "$r12", "$p1", "$p2"
     );
+#endif
 
     *rem = r;
     return q;

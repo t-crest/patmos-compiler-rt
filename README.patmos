@@ -33,6 +33,9 @@ The -DTRIPLE option is optional and defaults to patmos-unknown-unknown-elf.
 'make install' puts the generated files next to the installed patmos-newlib
 library files (which was configured with --prefix during newlib configuration)
 
+You can disable the use of inline assembly code by setting
+
+CFLAGS="-DCRT_NO_INLINE_ASM"
 
 Additional search paths can be provided using -DCMAKE_PROGRAM_PATH=<path>
 If you have an llvm installation apart from that with patmos,
