@@ -38,9 +38,11 @@ done
 if [ "$OUT_FILE" != "$LL_FILE" ]; then
     cat $LL_FILE > $OUT_FILE
 fi
-echo >> $OUT_FILE
-echo "@llvm.used = appending global [$cnt x i8*] [" >> $OUT_FILE
-echo -e "$LLVM_USED" >> $OUT_FILE
-echo '], section "llvm.metadata"' >> $OUT_FILE
+if [ $cnt != 0 ]; then
+  echo >> $OUT_FILE
+  echo "@llvm.used = appending global [$cnt x i8*] [" >> $OUT_FILE
+  echo -e "$LLVM_USED" >> $OUT_FILE
+  echo '], section "llvm.metadata"' >> $OUT_FILE
+fi
 
 exit 0
