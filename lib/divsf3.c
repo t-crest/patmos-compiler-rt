@@ -10,10 +10,6 @@
 // This file implements single-precision soft-float division
 // with the IEEE-754 default rounding (to nearest, ties to even).
 //
-// For simplicity, this implementation currently flushes denormals to zero.
-// It should be a fairly straightforward exercise to implement gradual
-// underflow with correct rounding.
-//
 //===----------------------------------------------------------------------===//
 
 #define SINGLE_PRECISION
@@ -149,9 +145,27 @@ fp_t __divsf3(fp_t a, fp_t b) {
     }
     
     else if (writtenExponent < 1) {
-        // Flush denormals to zero.  In the future, it would be nice to add
-        // code to round them correctly.
-        return fromRep(quotientSign);
+        // Result is denormal before rounding
+        //
+        // If the result is so small that it just underflows to zero, return
+        // a zero of the appropriate sign.  Mathematically there is no need to
+        // handle this case separately, but we make it a special case to
+        // simplify the shift logic.
+        const unsigned int shift = 1U - (unsigned int)writtenExponent;
+        if (shift >= typeWidth) return fromRep(quotientSign);
+        
+        // Otherwise, shift the significand of the result so that the round
+        // bit is the high bit of residual.
+        wideRightShiftWithSticky(&quotient, &residual, shift);
+
+        // Rounding. We use the default IEEE-754 round-to-nearest,
+        // ties-to-even rounding mode.
+        rep_t absResult = quotient;
+        if (residual > signBit) absResult++;
+        if (residual == signBit) absResult += absResult & 1;
+
+        // Insert the sign and return
+        return fromRep(absResult | quotientSign);
     }
     
     else {
