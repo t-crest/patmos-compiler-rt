@@ -22,3 +22,8 @@ declare i32 @fputc(i32, %__sFILE*)
 ; required for llvm.trap intrinsic
 declare void @abort() noreturn nounwind
 
+
+; stack cache functions
+declare void @_sc_reserve() nounwind
+declare void @_sc_ensure() nounwind
+declare void @_sc_free() nounwind
