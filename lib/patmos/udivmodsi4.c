@@ -26,6 +26,7 @@ __udivmodsi4(su_int n, su_int d, su_int* rem)
      * Should still be better than original C without branches due to lower data dependencies 
      * TODO The compiler should be able to lower this to the code below in the future. */
     r = 0;
+    #pragma loopbound min 32 max 32
     for (int i = 31; i >= 0; i--) {
 	r <<= 1;
 	// r[0] = n[i] -> should be p1 = btest n, i; (p1) or r = r, 1
