@@ -38,7 +38,7 @@ fi
 echo Reading $ARCHIVE
 # check for nm version
 if [ "$(@LLVM_NM_EXECUTABLE@ -V 2>/dev/null || echo llvm)" == "llvm" ]; then
-    @LLVM_NM_EXECUTABLE@ -defined-only -extern-only $ARCHIVE | sed -n "s/^[\t ]*T \(.*\)$/\1/p"  > $OUT_LST
+    @LLVM_NM_EXECUTABLE@ -defined-only -extern-only $ARCHIVE | sed -n "s/^[-\t ]*T \(.*\)$/\1/p"  > $OUT_LST
 else 
     @LLVM_NM_EXECUTABLE@ --defined-only --extern-only $ARCHIVE | grep " T " | sed -n "s/^[0-9A-F]* T \(.*\)$/\1/p" > $OUT_LST
 fi
@@ -54,7 +54,8 @@ pushd $TMPDIR > /dev/null
 ls *.bc > /dev/null 2>&1 || error_exit $? "Could not extract $ARCHIVE!"
 
 echo 'Extracting declarations'
-echo 'target triple = "@TRIPLE@"' > $OUT_LL
+echo 'target datalayout = "E-S32-p:32:32:32-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:32:32-f32:32:32-f64:32:32-a0:0:32-v64:32:32-v128:32:32-n32"' > $OUT_LL
+echo 'target triple = "@TRIPLE@"' >> $OUT_LL
 for f in *.bc
 do
   if [ "$(file $f | grep ELF)" != "" ]; then

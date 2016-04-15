@@ -30,7 +30,7 @@ for fn in $(grep "declare" $LL_FILE); do
 	LLVM_USED="$LLVM_USED,\n"
     fi
     # Extract signature, remove variable names of arguments
-    SIG=$(echo $fn | sed "s/declare \([a-z0-9*]*\) *\(@[a-zA-Z0-9_]*\)\((.*)\).*/\1 \3* \2/" | sed "s/\( nocapture\)* %[a-zA-Z][a-zA-Z0-9_]*//g")
+    SIG=$(echo $fn | sed "s/declare \([a-z0-9*]*\) *\(@[a-zA-Z0-9_]*\)\((.*)\).*/\1 \3* \2/" | sed "s/noalias sret //g" | sed "s/\( nocapture\)* %[a-zA-Z][a-zA-Z0-9_\.]*//g")
     LLVM_USED="$LLVM_USED  i8* bitcast ($SIG to i8*)"
     cnt=$((cnt+1))
 done
