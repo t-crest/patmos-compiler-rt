@@ -10,6 +10,7 @@ set( SRC_RT
  )
 
 set( SRC_RTSFLT
+ patmos/initfpu.c
  addsf3.c subsf3.c mulsf3.c divsf3.c comparesf2.c
  adddf3.c subdf3.c muldf3.c divdf3.c comparedf2.c
  truncdfsf2.c extendsfdf2.c

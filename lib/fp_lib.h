@@ -25,6 +25,7 @@
 #include <stdbool.h>
 #include <limits.h>
 #include "int_lib.h"
+#include "patmos/initfpu.h"
 
 #if defined SINGLE_PRECISION
 
